@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Signup for clipper.jp{% endblock %}
+
+{% block content %}
+    <h1>Signup</h1>
+    <br>
+    <form action="." method="post" class="form-horizontal">
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-block alert-error">
+                <h4>We're sorry, there were problems with the information you gave us.</h4>
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <fieldset>
+
+            <div class="control-group">
+                <label class="control-label" for="email">Email Address:</label>
+                <div class="controls form-inline">
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <span style="color: red">{{ form.email.errors.0 }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="password1">Password:</label>
+                <div class="controls form-inline">
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                        <span style="color: red">{{ form.password1.errors.0 }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="password2">Confirm Password:</label>
+                <div class="controls form-inline">
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                        <span style="color: red">{{ form.password2.errors.0 }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls form-inline">
+                    <input type="submit" value="Signup" class="btn btn-primary" id="signup-submit">
+                    {% csrf_token %}
+                </div>
+            </div>
+
+        </fieldset>
+    </form>
+
+{% endblock %}

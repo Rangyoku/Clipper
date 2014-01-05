@@ -1,0 +1,105 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+	line-height: 1.4;
+	background: #FEFEFE;
+	text-align: center;
+}
+#header_area {
+	background: #2693FF;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	border-top: 2px solid #2693ff;
+	width: 100%;
+	min-width: 1000px;
+	height: 100px;
+}
+#header_area #header_block {
+	text-align: center;
+	width: 900px;
+	margin-right: auto;
+	margin-left: auto;
+}
+#header_area #header_block #logo {
+	float: left;
+	margin-top: 40px;
+}
+
+#header_area #header_block #utility_box {
+	float: right;
+	width: 400px;
+	height: 70px;
+	margin-top: 30px;
+	overflow: visible;
+}
+
+#header_area #header_block #utility_box #login {
+	float: right;
+	margin-top: 15px;
+	margin-left: 10px;
+}
+#header_area #header_block #utility_box #faq {
+	margin-top: 15px;
+	float: right;
+	/*margin-left: 10px;*/
+}
+
+#contents_area {
+	text-align: left;
+	width: 900px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+/*Add margin-bottom here for feature_area since this set float*/
+#contents_area #main_contents {
+	float: left;
+	width: 455px;
+	margin-bottom: 25px;
+}
+
+#contents_area #main_contents #buzz_word {
+	float: left;
+	margin: 50px 0px 0px 0px;
+}
+#contents_area #main_contents #main_signup_area {
+	margin-top: 10px;
+	margin-left: 10px;
+	text-align: center;
+}
+#contents_area #main_contents #main_signup_area #sns_signup {
+	margin-top: 5px;
+	width: 300px;
+	margin-right: 40px;
+	margin-left: 60px;
+	height: 55px;
+}
+
+#contents_area #main_contents #main_signup_area #sns_signup .sns_list {
+	overflow: hidden;
+}
+
+#contents_area #main_contents #main_signup_area #sns_signup .sns_list li {
+	float: left;
+	margin-left: 1px;
+	margin-bottom: 5px;
+	font-weight: bold;
+	font-size: 14px;
+} /* Javascript might need to set inframe : later*/
+
+/*Add video and set position later*/
+#contents_area #video_contents {
+	float: right;
+}
+#contents_area #signup_area {
+	text-align: center;
+	margin-top: 50px;
+	margin-bottom: 300px;
+}
+#footer_area {
+	height: 200px;
+	background: #C7C7C7;
+	width: 100%;
+	min-width: 1000px;
+}

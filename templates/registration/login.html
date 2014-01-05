@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Login to clipper.jp{% endblock %}
+
+{% block content %}
+    <h2>Login</h2>
+    
+    <form action="/accounts/login/" method="post">
+        {{ form }}
+        {% csrf_token %}
+        <br>
+        <input type="submit" value="Login" class="btn btn-primary">
+    </form>
+
+<a href="{% url "password_reset" %}">Forgotten password?</a>
+
+{% endblock %}
+

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Home of {{ user }}{% endblock %}
+
+{% block content %}
+  
+  <h3>Hey {{ user }}, welcome to your home view.</h3>
+  
+  From here you can:
+  <ul>
+      <li>View your collections</li>
+      <li>View your bookmarks</li>
+      <li>Add a new collection</li>
+      <li>Add a new bookmark</li>
+  </ul>
+    
+{% endblock %}

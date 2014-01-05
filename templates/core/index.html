@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Login to clipper.jp{% endblock %}
+
+{% block content %}
+
+<div id="contents_area">
+  <div id="main_contents">
+  <p id="buzz_word"><img src="{{ STATIC_URL }}images/main_title.gif" width="436" height="186" alt="Never lose your favorite web page!" /></p>
+    <p><img src="{{ STATIC_URL }}images/main_title_2.png" width="450" height="253" alt="link切れ心配無用 /Clipper は簡単なツールで、あなたのお気に入りのwebpage をブックマークし、保存・管理・整理して快適なリサーチを助けます。/すぐに無料で使えます！/ ↓他にも色々な機能があります。" /></p>
+    <div id="main_signup_area">
+  <h2 id="signup_btn"><a href="{% url 'registration_register' %}"><img src="{{ STATIC_URL }}images/signup_btn.png" width="336" height="52" alt="Sign up for free!" /></a></h2>
+  <div id="sns_signup">
+    <ul class = "sns_list">
+      <li><img src="{{ STATIC_URL }}images/fb_btn.png" alt="facebook " width="49" height="44" id="facebook_btn" /></li>
+      <li><img src="{{ STATIC_URL }}images/twitter_btn.png" alt="Twitter " width="46" height="44" id="twitter_btn" /></li>
+      <li>←１クリックで登録！</li>
+    </ul>
+    </div>
+    <!--div for main_signup_area in --></div>
+  <!--div for main_contents--></div>
+  <div id="video_contents">
+  <p>Youtube video </p>
+  <!--div for video_contents--></div>
+  <div id="feature_contents">
+  <ul>
+    <li><img src="{{ STATIC_URL }}images/feature_1.png" width="873" height="168" alt="リンク切れで記事が読めない！/ Clipper が解決します！/ ブックマークした記事をキャッシュ(コピー)し、保存管理します。/ブックマークが多すぎて読みたい記事がすぐ探せない!/ 各記事にタグ付けが出来るので、検索も簡単かつスピーディーに読みたい記事が探せます。" /></li>
+    <li><img src="{{ STATIC_URL }}images/feature_2.png" width="873" height="168" alt="インターネット上の記事にもメモを書きたい！/ ブックマークした各記事にメモをつけることができます。/ Clipper が解決します！/ ちょっと古いけどいい記事知ってる！皆に教えたい！/ キャッシュしてるのでリンク切れのweb site や古い記事でも他の人と共有することができます。" /></li>
+  </ul>
+  <!--div for feature_contents--></div>
+  <div id="signup_area">
+  <h2 id="signupfr_btn"><a href="{% url 'registration_register' %}"><img src="{{ STATIC_URL }}images/signupfr_btn.png" width="355" height="66" alt="Sign up NOW for free!" /></a></h2>
+  <!--div for signup_area--></div>
+</div><!--div for contents_area-->
+        
+{% endblock %}

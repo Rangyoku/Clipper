@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Edit Your User Profile{% endblock %}
+
+{% block content %}
+    <h1>Edit your profile</h1>
+    
+    <form action="." method="post">
+        {{ form }}
+        {% csrf_token %}
+        <br>
+        <input type="submit" value="Save Changes" class="btn btn-primary">
+    </form>
+    
+{% endblock %}
