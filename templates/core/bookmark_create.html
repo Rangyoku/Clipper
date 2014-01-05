@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Create Bookmark{% endblock %}
+
+{% block content %}
+    <h2>Create Bookmark in {{ collection.name }}</h2>
+    
+    <form action="{% url 'core:bookmark_create' collection.id %}" method="post">{% csrf_token %}
+        {{ form.as_p }}<br>
+        <input type="submit" value="Create">
+    </form>
+
+{% endblock %}

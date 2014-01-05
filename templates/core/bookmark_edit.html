@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Edit Bookmark{% endblock %}
+
+{% block content %}
+    <h2>Edit Bookmark</h2>
+    
+    <form action="{% url "core:bookmark_edit" bookmark.id %}" method="post">{% csrf_token %}
+        {{ form.as_p }}<br>
+        <input type="submit" value="Save">
+    </form>
+
+{% endblock %}
+

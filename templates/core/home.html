@@ -2,16 +2,31 @@
 
 {% block page_title %}Home of {{ user }}{% endblock %}
 
+{% block top-links %}
+    
+      [Manage <a href="#">Collections</a> : <a href="#">Bookmarks</a> ] <a href="/accounts/logout/">Logout</a>
+
+{% endblock %}
+
 {% block content %}
   
   <h3>Hey {{ user }}, welcome to your home view.</h3>
   
-  From here you can:
+  {% if user_collections %}
+  
+  <b>Here are your collections:</b><br>  
   <ul>
-      <li>View your collections</li>
-      <li>View your bookmarks</li>
-      <li>Add a new collection</li>
-      <li>Add a new bookmark</li>
+      {% for collection in user_collections %}
+        <li><a href="{{ collection.get_absolute_url }}">{{ collection.name }}</a> (bookmarks: {{ collection.bookmark_count }})</li>
+      {% endfor %}
   </ul>
+  
+  <a href="{% url "core:collection_create" %}">Create a new Collection</a>
+    
+  {% else %}
+
+    You don't have any collections yet. Why not <a href="{% url "core:collection_create" %}">create one?</a>
+
+  {% endif %}
     
 {% endblock %}

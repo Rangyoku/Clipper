@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block page_title %}{{ bookmark.name }} Bookmark{% endblock %}
+
+{% block content %}
+
+
+
+  <h3><a href="{% url 'core:collection_detail' bookmark.collection.id %}">{{ bookmark.collection}}</a> : {{ bookmark.name }}</h3>
+    
+    URL: {{ bookmark.url }}<br>
+    Rating: {{ bookmark.rating }}<br>
+    Notes: {{ bookmark.notes }}<br>
+    
+    <h2><a href="{{ bookmark.url }}" target="new">Go to bookmark!</a></h2>
+
+  Want to <a href="{% url 'core:bookmark_edit' bookmark.id %}">Edit this bookmark</a>?
+
+{% endblock %}

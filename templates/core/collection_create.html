@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Create Collection{% endblock %}
+
+{% block content %}
+    <h2>Create Collection</h2>
+    
+    <form action="{% url "core:collection_create" %}" method="post">{% csrf_token %}
+        {{ form.as_p }}<br>
+        <input type="submit" value="Create">
+    </form>
+
+{% endblock %}
+

@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block page_title %}Login to clipper.jp{% endblock %}
+{% block page_title %}Clipper Collections{% endblock %}
 
 {% block content %}
 
-  <h3>this is the collections view</h3>
+  <h3>this is the collections view. it currently shows all collections for all users.</h3>
   
   
   <ul>
@@ -13,7 +13,5 @@
   {% endfor %}
   
   </ul>
-  
-      <a href="{% url 'core:home' %}">Home</a> :: Signup :: Login
      
 {% endblock %}

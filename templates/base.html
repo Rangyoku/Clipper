@@ -12,21 +12,25 @@
 <body>
 <div id="header_area">
 <div id="header_block">
+    
+    
     {% if user.is_authenticated %}
     <h1 id="logo"><a href="{% url "core:home" %}"><img src="{{ STATIC_URL }}images/logo.png" width="206" height="53" alt="Clipper " /></a></h1>
       {% else %}
     <h1 id="logo"><a href="{% url "core:index" %}"><img src="{{ STATIC_URL }}images/logo.png" width="206" height="53" alt="Clipper " /></a></h1>
       {% endif %}
+    
+    
   <div id="utility_box">
-        
+    {% block top-links %}
       {% if user.is_authenticated %}
           Welcome, <a href="{% url 'core:home' %}">{{ user }}</a>. <a href="/accounts/logout/">Logout</a>
       {% else %}
-          <p id="login"><a href="{% url "auth_login" %}"><img src="{{ STATIC_URL }}images/loginbtn.gif" width="101" height="49" alt="ログイン" /></a></p> 
+          <p id="login"><a href="{% url "auth_login" %}"><img src="{{ STATIC_URL }}images/loginbtn.gif" width="101" height="49" alt="ログイン" /></a></p>
       {% endif %}
-          <p id="faq"><a href="{% url 'core:faq' %}"><img src="{{ STATIC_URL }}images/faq_btn.gif" width="101" height="46" alt="FAQ" /></a></p> 
-		
-             
+
+    <p id="faq"><a href="{% url 'core:faq' %}"><img src="{{ STATIC_URL }}images/faq_btn.gif" width="101" height="46" alt="FAQ" /></a></p>
+    {% endblock %}
 
   </div>
 <!--div for header_block--></div>
@@ -38,6 +42,7 @@ This is the content for base.html, it should not be seen.<br>
 Replace this in the template by loading the 'content' block.<br>
 
 {% endblock %}
+
 <div id="footer_area">
 
 <p><a href="/">Home</a> : <a href="{% url 'core:collections_view' %}">Collections</a> : <a href="/admin/">Admin</a> : <a href="{% url 'registration_register' %}">Register</a></p>

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block page_title %}{{ collection.name }} Collection{% endblock %}
+
+{% block content %}
+
+  <h3><a href="{% url 'core:home' %}">Home</a> : {{ collection.name }}</h3>
+  
+  
+  {% if collection.bookmark_set.all %}
+  
+  <p>Your bookmarks in this collection...</p>
+  
+  <ul>
+  {% for bookmark in collection.bookmark_set.all %}
+    <li><a href="{{ bookmark.get_absolute_url }}">{{ bookmark.name }}</a></li>
+  {% endfor %}  
+  </ul>
+  
+  {% else %}
+
+  You have no bookmarks in this collection. Why not <a href="{% url 'core:bookmark_create' collection.id %}">add one</a>?<br>
+
+  {% endif %}
+
+  
+  Want to <a href="{% url 'core:collection_edit' collection.id %}">edit this collection</a> or <a href="{% url 'core:bookmark_create' collection.id %}">add a new bookmark</a>?
+
+{% endblock %}

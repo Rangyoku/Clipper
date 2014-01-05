@@ -5,17 +5,7 @@ from django.views import generic
 from django.db.models import Count
 
 from core.models import UserProfile, Collection, Bookmark, Tag
-
-"""
-url(r'^$', views.index, name='index'),
-url(r'^collections/$', views.collections_view, name='collections_view'), # show all collections
-url(r'^(?P<username>\w+)/', views.user_view, name='user_view'),
-url(r'^(?P<username>\w+)/edit/', views.user_edit, name='user_edit'),
-url(r'^(?P<username>\w+)/(?P<collectionname>\w+)/', views.collection_view, name='collection_view'),
-url(r'^(?P<username>\w+)/(?P<collectionname>\w+)/edit/', views.collection_edit, name='collection_edit'),
-url(r'^(?P<username>\w+)/(?P<collectionname>\w+)/(?P<bookmark_id>\d+)/', views.bookmark_view, name='bookmark_view'),
-url(r'^(?P<username>\w+)/(?P<collectionname>\w+)/(?P<bookmark_id>\d+)/edit/', views.bookmark_edit, name='bookmark_edit'),
-"""
+from core.forms import CreateCollection, EditCollection, CreateBookmark, EditBookmark
 
 def index(request):
     #collections_with_counts = Collection.objects.annotate(Count('bookmark'))
@@ -24,7 +14,8 @@ def index(request):
 
 def home(request):
     """ The home view for a logged in user. """
-    return render(request, 'core/home.html')
+    user_collections = Collection.objects.filter(user=request.user)
+    return render(request, 'core/home.html', {'user_collections': user_collections})
 
 def faq_view(request):
     """ The FAQ view. """
@@ -40,25 +31,100 @@ def collections_view(request):
         collections_w_bmark_counts.append(dict)
     return render(request, 'core/collections_view.html', {'collections_w_bmark_counts': collections_w_bmark_counts})
 
-"""
-def body_edit(request, body_id):
-    if request.method == 'GET':
-        body = get_object_or_404(KnowledgeBody, pk=body_id)
-        return render(request, 'km/body_edit.html', {'body': body})
+def collection_create(request):
+    """ Create a new collection. """
+    if request.method == 'POST': # If the form has been submitted...
+        form = CreateCollection(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            name = form.cleaned_data['name']
+            description = form.cleaned_data['description']
+            is_private = form.cleaned_data['is_private']
+            userprofile = request.user.userprofile
+            
+            new_collection = Collection(name=name, description=description, is_private=is_private, user=userprofile)
+            new_collection.save()
+            
+            return HttpResponseRedirect('/home/') # Redirect after POST
     else:
-        b = get_object_or_404(KnowledgeBody, pk=body_id)
-        try:
-            delete_selected = b.knowledgebranch_set.get(pk=request.POST['branch'])
-        except (KeyError, KnowledgeBranch.DoesNotExist):
-            # Redisplay the poll voting form.
-            return render(request, 'km/body_edit.html', {
-                'body': b,
-                'error_message': "You didn't check any boxes.",
-            })
-        else:
-            delete_selected.delete()
-            # Always return an HttpResponseRedirect after successfully dealing
-            # with POST data. This prevents data from being posted twice if a
-            # user hits the Back button.
-            return HttpResponseRedirect(reverse('km:body_detail', args=(b.id,)))
-"""
+        form = CreateCollection() # An unbound form
+
+    return render(request, 'core/collection_create.html', {
+        'form': form,
+    })
+
+def collection_detail(request, collection_id):
+    """ View the details of one collection. """
+    collection = get_object_or_404(Collection, pk=collection_id)
+    return render(request, 'core/collection_detail.html', {'collection': collection})
+
+def collection_edit(request, collection_id):
+    """ Edit the detials of one collection. """
+    collection = get_object_or_404(Collection, pk=collection_id)
+    if request.method == 'POST': # If the form has been submitted...
+        form = EditCollection(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            collection.name = form.cleaned_data['name']
+            collection.description = form.cleaned_data['description']
+            collection.is_private = form.cleaned_data['is_private']
+
+            collection.save() # Save the new collection info.
+            
+            return HttpResponseRedirect(reverse('core:collection_detail', args=[collection.id])) # Redirect after POST
+    else:
+        form = EditCollection(initial={'name': collection.name, 'description': collection.description, 'is_private': collection.is_private}) # An unbound form
+
+    return render(request, 'core/collection_edit.html', {
+        'collection': collection, 'form': form,
+    })
+    
+def bookmark_create(request, collection_id):
+    """ Create a new bookmark within the collection ID provided. """
+    collection = get_object_or_404(Collection, pk=collection_id)
+    if request.method == 'POST': # If the form has been submitted...
+        form = CreateBookmark(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            name = form.cleaned_data['name']
+            url = form.cleaned_data['url']
+            is_private = form.cleaned_data['is_private']
+            rating = form.cleaned_data['rating']
+            notes = form.cleaned_data['notes']
+
+            new_bookmark = Bookmark(name=name, is_private=is_private, url=url,
+                collection=collection, rating=rating, notes=notes)
+            new_bookmark.save()
+
+            return HttpResponseRedirect(reverse('core:bookmark_detail', args=[new_bookmark.id])) # Redirect after POST
+    else:
+        form = CreateBookmark() # An unbound form
+
+    return render(request, 'core/bookmark_create.html', {
+        'form': form, 'collection': collection
+    })
+    
+def bookmark_detail(request, bookmark_id):
+    """ View the details of one bookmark. """
+    bookmark = get_object_or_404(Bookmark, pk=bookmark_id)
+    return render(request, 'core/bookmark_detail.html', {'bookmark': bookmark})
+
+def bookmark_edit(request, bookmark_id):
+    """ Edit the detials of one bookmark. """
+    bookmark = get_object_or_404(Bookmark, pk=bookmark_id)
+    if request.method == 'POST': # If the form has been submitted...
+        form = EditBookmark(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            bookmark.name = form.cleaned_data['name']
+            bookmark.url = form.cleaned_data['url']
+            bookmark.is_private = form.cleaned_data['is_private']
+            bookmark.rating = form.cleaned_data['rating']
+            bookmark.notes = form.cleaned_data['notes']
+
+            bookmark.save() # Save the new collection info.
+
+            return HttpResponseRedirect(reverse('core:bookmark_detail', args=[bookmark.id])) # Redirect after POST
+    else:
+        form = EditBookmark(initial={'name': bookmark.name, 'is_private': bookmark.is_private, 'url': bookmark.url,
+            'rating': bookmark.rating, 'notes': bookmark.notes}) # An unbound form
+
+    return render(request, 'core/bookmark_edit.html', {
+        'bookmark': bookmark, 'form': form,
+    })

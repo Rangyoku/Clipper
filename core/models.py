@@ -19,15 +19,23 @@ class UserProfile(models.Model):
     post_save.connect(create_user_profile, sender=User)
 	
     def __unicode__(self):
-		return self.user_name
+		return str(self.user)
     def email_user(self, subject, message, from_email=None):
         #Sends an email to this User.
         send_mail(subject, message, from_email, [self.email])
 
 class Collection(models.Model):
-    name = models.CharField(max_length=30, blank=False)
+    name = models.CharField(max_length=200, blank=False)
+    description = models.CharField(max_length=350, blank=True)
     is_private = models.BooleanField(default=False)
-    #user = models.ForeignKey(UserProfile)
+    user = models.ForeignKey(UserProfile)
+
+    def bookmark_count(self):
+		return str(self.bookmark_set.count())
+		
+    def get_absolute_url(self):
+        from django.core.urlresolvers import reverse
+        return reverse('core:collection_detail', args=[str(self.id)])
     
     def __unicode__(self):
 		return self.name
@@ -39,8 +47,13 @@ class Bookmark(models.Model):
     cache_content = models.TextField(blank=True)
     is_private = models.BooleanField(default=False)
     rating = models.IntegerField(blank=True)
+    notes = models.CharField(max_length=500, blank=True)
     collection = models.ForeignKey(Collection)
-    
+	
+    def get_absolute_url(self):
+        from django.core.urlresolvers import reverse
+        return reverse('core:bookmark_detail', args=[str(self.id)])
+		    
     def __unicode__(self):
 		return self.name
 
