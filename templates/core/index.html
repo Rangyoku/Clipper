@@ -12,8 +12,9 @@
   <h2 id="signup_btn"><a href="{% url 'registration_register' %}"><img src="{{ STATIC_URL }}images/signup_btn.png" width="336" height="52" alt="Sign up for free!" /></a></h2>
   <div id="sns_signup">
     <ul class = "sns_list">
-      <li><img src="{{ STATIC_URL }}images/fb_btn.png" alt="facebook " width="49" height="44" id="facebook_btn" /></li>
-      <li><img src="{{ STATIC_URL }}images/twitter_btn.png" alt="Twitter " width="46" height="44" id="twitter_btn" /></li>
+      <li><a href="{% url 'socialauth_begin' 'facebook' %}"><img src="{{ STATIC_URL }}images/fb_btn.png" alt="facebook " width="49" height="44" id="facebook_btn" /></a></li>
+      <li><a href="{% url 'socialauth_begin' 'twitter' %}"><img src="{{ STATIC_URL }}images/twitter_btn.png" alt="Twitter " width="46" height="44" id="twitter_btn" /></a></li>
+      <li><a href="{% url 'socialauth_begin' 'google-oauth2' %}">Google OAuth2</a></li>
       <li>←１クリックで登録！</li>
     </ul>
     </div>

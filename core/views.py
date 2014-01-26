@@ -17,6 +17,12 @@ def home(request):
     user_collections = Collection.objects.filter(user=request.user)
     return render(request, 'core/home.html', {'user_collections': user_collections})
 
+def shome(request):
+	""" The home view for a logged in user. """
+	user_collections = Collection.objects.filter(user=request.user)
+	return render(request, 'core/shome.html', {'user_collections': user_collections})
+
+
 def faq_view(request):
     """ The FAQ view. """
     return render(request, 'core/faq.html')
