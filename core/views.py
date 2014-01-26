@@ -1,3 +1,5 @@
+from urllib2 import urlopen
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
@@ -94,9 +96,13 @@ def bookmark_create(request, collection_id):
             is_private = form.cleaned_data['is_private']
             rating = form.cleaned_data['rating']
             notes = form.cleaned_data['notes']
+            
+            get_url = urlopen(url) # Opens a connection to the bookmark's url
+            raw_html = get_url.read() # Reads that connection into raw_html to be saved.
+            get_url.close() # Closes the connection.
 
             new_bookmark = Bookmark(name=name, is_private=is_private, url=url,
-                collection=collection, rating=rating, notes=notes)
+                collection=collection, rating=rating, notes=notes, raw_html=raw_html)
             new_bookmark.save()
 
             return HttpResponseRedirect(reverse('core:bookmark_detail', args=[new_bookmark.id])) # Redirect after POST
@@ -134,3 +140,8 @@ def bookmark_edit(request, bookmark_id):
     return render(request, 'core/bookmark_edit.html', {
         'bookmark': bookmark, 'form': form,
     })
+
+def bookmark_viewhtml(request, bookmark_id):
+    """ View the raw HTML for this bookmark"""
+    bookmark = get_object_or_404(Bookmark, pk=bookmark_id)
+    return render(request, 'core/bookmark_viewhtml.html', {'bookmark': bookmark})
