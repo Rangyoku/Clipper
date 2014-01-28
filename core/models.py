@@ -28,7 +28,7 @@ class Collection(models.Model):
     name = models.CharField(max_length=200, blank=False)
     description = models.CharField(max_length=350, blank=True)
     is_private = models.BooleanField(default=False)
-    user = models.ForeignKey(UserProfile)
+    user = models.ForeignKey(UserProfile) #test change userprofile to bookmark
 
     def bookmark_count(self):
 		return str(self.bookmark_set.count())
@@ -48,7 +48,9 @@ class Bookmark(models.Model):
     is_private = models.BooleanField(default=False)
     rating = models.IntegerField(blank=True)
     notes = models.CharField(max_length=500, blank=True)
+    user = models.ForeignKey(UserProfile)
     collection = models.ForeignKey(Collection)
+
 	
     def get_absolute_url(self):
         from django.core.urlresolvers import reverse
