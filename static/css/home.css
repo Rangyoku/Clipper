@@ -1,0 +1,88 @@
+@charset "UTF-8";@charset "UTF-8";
+/* CSS Document */
+
+body{
+	background-color: #E0E0E0;
+}
+#home_contents_area {
+	/*margin-bottom: 300px;*/
+	/*margin-top: 30px;*/
+	font-size: 13px;
+	/*background: white;*/
+}
+
+#home_contents_area #collection_title {
+	float: left;
+	width: 170px;
+	height:100%;
+	margin-top: 30px;
+	font-size: 13px;
+	overflow: auto;
+	margin-left: 10px;
+}
+
+#home_contents_area #bookmark_list {
+	margin-top: 30px;
+	margin-left: 200px;
+	background-color: white;
+	text-align: left;
+	font-family: sans-serif, Gadget,"Arial Black" ;
+	font-size: 16px;
+	font-weight: bold;
+	color: #333;	
+}
+
+#footer_area {
+    margin-top: 300px;
+	height: 200px;
+	background: #C7C7C7;
+	width: 100%;
+	min-width: 1000px;
+	clear: both;
+}
+
+
+
+/* CSS Document */
+
+body{
+	background-color: #E0E0E0;
+}
+#home_contents_area {
+	/*margin-bottom: 300px;*/
+	/*margin-top: 30px;*/
+	font-size: 13px;
+	/*background: white;*/
+}
+
+#home_contents_area #collection_title {
+	float: left;
+	width: 170px;
+	height:100%;
+	margin-top: 30px;
+	font-size: 13px;
+	overflow: auto;
+	margin-left: 10px;
+}
+
+#home_contents_area #bookmark_list {
+	margin-top: 30px;
+	margin-left: 200px;
+	background-color: white;
+	text-align: left;
+	font-family: sans-serif, Gadget,"Arial Black" ;
+	font-size: 16px;
+	font-weight: bold;
+	color: #333;	
+}
+
+#footer_area {
+    margin-top: 300px;
+	height: 200px;
+	background: #C7C7C7;
+	width: 100%;
+	min-width: 1000px;
+	clear: both;
+}
+
+

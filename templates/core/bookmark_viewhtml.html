@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block page_title %}{{ bookmark.name }} Bookmark{% endblock %}
+
+{% block content %}
+
+
+
+  <h3><a href="{% url 'core:collection_detail' bookmark.collection.id %}">{{ bookmark.collection}}</a> : {{ bookmark.name }}</h3>
+    
+    URL: {{ bookmark.url }}<br>
+    Rating: {{ bookmark.rating }}<br>
+    Notes: {{ bookmark.notes }}<br>
+    
+    <p>Here's the raw HTML:</p>
+    {{ bookmark.raw_html|safe }}
+
+
+{% endblock %}

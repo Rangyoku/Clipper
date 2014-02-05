@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^collection/(?P<collection_id>\d+)/create_bookmark/$', views.bookmark_create, name='bookmark_create'), # create a bookmark in this collection
     url(r'^bookmark/(?P<bookmark_id>\d+)/$', views.bookmark_detail, name='bookmark_detail'), # view a bookmark details
     url(r'^bookmark/(?P<bookmark_id>\d+)/edit/$', views.bookmark_edit, name='bookmark_edit'), # edit a bookmark details
+    url(r'^bookmark/(?P<bookmark_id>\d+)/viewhtml/$', views.bookmark_viewhtml, name='bookmark_viewhtml'), # edit a bookmark details
 
     #url(r'^(?P<username>\w+)/', views.user_view, name='user_view'),
     #url(r'^(?P<username>\w+)/edit/', views.user_edit, name='user_edit'),

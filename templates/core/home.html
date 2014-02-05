@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block page_title %}Home of {{ user }}{% endblock %}
+{% block css %}
+<link href="{{ STATIC_URL }}css/home.css" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
 
 {% block top-links %}
     
@@ -9,24 +12,39 @@
 {% endblock %}
 
 {% block content %}
+
+<div id="home_contents_area">
+<!--Main Contents -->
+ 　<div id="collection_title"> 
   
-  <h3>Hey {{ user }}, welcome to your home view.</h3>
+     {% if user_collections %}
   
-  {% if user_collections %}
+     <b>Here are your collections:</b><br>  
+     <ul>
+        {% for collection in user_collections %}
+           <li><a href="{{ collection.get_absolute_url }}">{{ collection.name }}</a> (bookmarks: {{ collection.bookmark_count }})</li>
+        {% endfor %}
+     </ul>
   
-  <b>Here are your collections:</b><br>  
-  <ul>
-      {% for collection in user_collections %}
-        <li><a href="{{ collection.get_absolute_url }}">{{ collection.name }}</a> (bookmarks: {{ collection.bookmark_count }})</li>
-      {% endfor %}
-  </ul>
-  
-  <a href="{% url "core:collection_create" %}">Create a new Collection</a>
+     <a href="{% url "core:collection_create" %}">Create a new Collection</a>
     
-  {% else %}
+     {% else %}
 
-    You don't have any collections yet. Why not <a href="{% url "core:collection_create" %}">create one?</a>
+     You don't have any collections yet. Why not <a href="{% url "core:collection_create" %}">create one?</a>
 
-  {% endif %}
+     {% endif %}
+   </div>
+
+   <div id="bookmark_list">
+	    <h3>Hey {{ user }}, welcome to your home view.</h3>
+        <p>
+		  <ul>
+		  <!--{% for bookmark in user_bookmarks %}
+		    <li><a href="{{ bookmark.get_absolute_url }}">{{ bookmark.name }}</a></li>
+		  {% endfor %}  -->
+		  </ul>
+		</p>
+   </div>
+</div><!--div for home_contents_area-->
     
 {% endblock %}

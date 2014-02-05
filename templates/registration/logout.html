@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 
 {% block page_title %}You have been logged out.{% endblock %}
+{% block css %}
+<link href="{{ STATIC_URL }}css/home.css" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
 
 {% block content %}
+<div id="home_contents_area">
+	
     <h1>You have been logged out.</h1>
+
+</div>
 {% endblock %}

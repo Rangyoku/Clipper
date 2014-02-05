@@ -1,29 +1,40 @@
 {% extends 'base.html' %}
 
 {% block page_title %}{{ collection.name }} Collection{% endblock %}
+{% block css %}
+<link href="{{ STATIC_URL }}css/home.css" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
 
 {% block content %}
 
-  <h3><a href="{% url 'core:home' %}">Home</a> : {{ collection.name }}</h3>
-  
-  
-  {% if collection.bookmark_set.all %}
-  
-  <p>Your bookmarks in this collection...</p>
-  
-  <ul>
-  {% for bookmark in collection.bookmark_set.all %}
-    <li><a href="{{ bookmark.get_absolute_url }}">{{ bookmark.name }}</a></li>
-  {% endfor %}  
-  </ul>
-  
-  {% else %}
+<div id="home_contents_area">
+<!--Main Contents -->
+ 　  <div id="collection_title">
 
-  You have no bookmarks in this collection. Why not <a href="{% url 'core:bookmark_create' collection.id %}">add one</a>?<br>
+        <h3> <a href="{% url 'core:home' %}">Home</a></h3>
+        <p>{{ collection.name }}</p>
+        <a href="{% url "core:collection_create" %}">Create a new Collection</a>      
 
-  {% endif %}
-
+    </div>
+    <div id="bookmark_list">  
+      {% if collection.bookmark_set.all %}
   
-  Want to <a href="{% url 'core:collection_edit' collection.id %}">edit this collection</a> or <a href="{% url 'core:bookmark_create' collection.id %}">add a new bookmark</a>?
+          <p>Your bookmarks in this collection..!</p>
+  
+          <ul>
+          {% for bookmark in collection.bookmark_set.all %}
+          <li><a href="{%url 'core:bookmark_viewhtml' bookmark.id %}">{{ bookmark.name }}</a></li>
+          {% endfor %}  
+          </ul>
+  
+      {% else %}
 
+      You have no bookmarks in this collection. Why not <a href="{% url 'core:bookmark_create' collection.id %}">add one</a>?<br>
+
+      {% endif %}
+
+      <p>
+      Want to <a href="{% url 'core:collection_edit' collection.id %}">edit this collection</a> or <a href="{% url 'core:bookmark_create' collection.id %}">add a new bookmark</a>?
+      </p>
+    </div>
 {% endblock %}
