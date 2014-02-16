@@ -5,9 +5,11 @@ from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.db.models import Count
+from django.contrib.auth.forms import AuthenticationForm
+from django import forms
 
 from core.models import UserProfile, Collection, Bookmark, Tag
-from core.forms import CreateCollection, EditCollection, CreateBookmark, EditBookmark
+from core.forms import CreateCollection, EditCollection, CreateBookmark, CreateBookmarklet, EditBookmark
 
 def index(request):
     #collections_with_counts = Collection.objects.annotate(Count('bookmark'))
@@ -17,7 +19,8 @@ def index(request):
 def home(request):
     """ The home view for a logged in user. """
     user_collections = Collection.objects.filter(user=request.user)
-    return render(request, 'core/home.html', {'user_collections': user_collections})
+    user_bookmarks = Bookmarks.objects.filter(user=request.user)
+    return render(request, 'core/home.html', {'user_collections': user_collections, 'user_bookmarks': user_bookmarks})
 
 def faq_view(request):
     """ The FAQ view. """
@@ -79,34 +82,90 @@ def collection_edit(request, collection_id):
         'collection': collection, 'form': form,
     })
     
-def bookmark_create(request, collection_id):
-    """ Create a new bookmark within the collection ID provided. """
-    collection = get_object_or_404(Collection, pk=collection_id)
-    if request.method == 'POST': # If the form has been submitted...
-        form = CreateBookmark(request.POST) # A form bound to the POST data
-        if form.is_valid(): # All validation rules pass
-            name = form.cleaned_data['name']
-            url = form.cleaned_data['url']
-            is_private = form.cleaned_data['is_private']
-            rating = form.cleaned_data['rating']
-            notes = form.cleaned_data['notes']
+def bookmark_create(request):
+    """ Create a new bookmark within the collection ID provided. --- Change it to not provided for now"""
+    #collection = get_object_or_404(Collection, pk=collection_id)
+    if request.user.is_authenticated():
+        if request.method == 'POST': # If the form has been submitted...
+            form = CreateBookmark(request.POST) # A form bound to the POST data
+            if form.is_valid(): # All validation rules pass
+                name = form.cleaned_data['name']
+                url = form.cleaned_data['url']
+                is_private = form.cleaned_data['is_private']
+                read_later = form.cleaned_data['read_later']
+                rating = form.cleaned_data['rating']
+                notes = form.cleaned_data['notes']
+                collection = form.cleaned_data['collection']
+                userprofile = request.user.userprofile
             
-            get_url = urlopen(url) # Opens a connection to the bookmark's url
-            raw_html = get_url.read() # Reads that connection into raw_html to be saved.
-            get_url.close() # Closes the connection.
+                get_url = urlopen(url) # Opens a connection to the bookmark's url
+                raw_html = get_url.read() # Reads that connection into raw_html to be saved.
+                get_url.close() # Closes the connection.
 
-            new_bookmark = Bookmark(name=name, is_private=is_private, url=url,
-                collection=collection, rating=rating, notes=notes, raw_html=raw_html)
-            new_bookmark.save()
+                new_bookmark = Bookmark(name=name, is_private=is_private, url=url, read_later=read_later,
+                    collection=collection, rating=rating, notes=notes, raw_html=raw_html, user=userprofile)
+                new_bookmark.save()
 
-            return HttpResponseRedirect(reverse('core:bookmark_detail', args=[new_bookmark.id])) # Redirect after POST
+                return HttpResponseRedirect(reverse('core:bookmark_detail', args=[new_bookmark.id])) # Redirect after POST
+        else:
+            form = CreateBookmark(request.user) # An unbound form
+            return render(request,'core/bookmark_create.html',{'form':form})
+
+        """return render(request, 'core/bookmark_create.html', {
+            'form': form
+            })            """
+        
     else:
-        form = CreateBookmark() # An unbound form
+        form = AuthenticationForm()
+        return render(request, 'registration/login.html', {'form':form})
 
-    return render(request, 'core/bookmark_create.html', {
-        'form': form, 'collection': collection
-    })
-    
+def bookmarklet_create(request):
+    """ Create a new bookmark within the collection ID provided. --- Change it to not provided for now"""
+    #collection = get_object_or_404(Collection, pk=collection_id)
+    if request.user.is_authenticated():
+
+        if request.method == 'POST': # If the form has been submitted...
+            form = CreateBookmarklet(request.POST) # A form bound to the POST data
+            if form.is_valid(): # All validation rules pass
+                name = form.cleaned_data['name']
+                url = form.cleaned_data['url']
+                is_private = form.cleaned_data['is_private']
+                read_later = form.cleaned_data['read_later']
+                rating = form.cleaned_data['rating']
+                notes = form.cleaned_data['notes']
+                collection = form.cleaned_data['collection']
+                userprofile = request.user.userprofile
+                
+                raw_html = ''
+                if read_later:
+                    get_url = urlopen(url) # Opens a connection to the bookmark's url
+                    raw_html = get_url.read() # Reads that connection into raw_html to be saved.
+                    get_url.close() # Closes the connection.
+
+                new_bookmark = Bookmark(name=name, is_private=is_private, url=url, read_later=read_later, collection=collection, rating=rating, notes=notes, raw_html=raw_html, user=userprofile)
+                new_bookmark.save()
+                
+                return HttpResponseRedirect(reverse('core:bookmark_detail', args=[new_bookmark.id]) ) # Redirect after POST
+            else: 
+                """If NOT form.is_valid()"""
+                errors = "please fix errors"
+                #form = CreateBookmarklet(user=request.user, initial={'url': url, 'name': title}) # An unbound form
+                #form.fields['url'].widget = forms.HiddenInput()
+                #form = CreateBookmarklet(request.user)
+                return render(request,'core/bookmarklet_create.html',{'form':form, 'errors': errors})
+        else:
+            data = request.GET.copy()
+            url = data['url']
+            title = data['title']
+            form = CreateBookmarklet(user=request.user, initial={'url': url, 'name': title}) # An unbound form
+            form.fields['url'].widget = forms.HiddenInput()
+            #form = CreateBookmarklet() #An unbound form
+            return render(request,'core/bookmarklet_create.html',{'form':form})
+    else:
+        form = AuthenticationForm()
+        return render(request, 'registration/login.html', {'form':form})
+
+        
 def bookmark_detail(request, bookmark_id):
     """ View the details of one bookmark. """
     bookmark = get_object_or_404(Bookmark, pk=bookmark_id)
@@ -121,19 +180,20 @@ def bookmark_edit(request, bookmark_id):
             bookmark.name = form.cleaned_data['name']
             bookmark.url = form.cleaned_data['url']
             bookmark.is_private = form.cleaned_data['is_private']
+            bookmark.read_later = form.cleaned_data['read_later']
             bookmark.rating = form.cleaned_data['rating']
             bookmark.notes = form.cleaned_data['notes']
+            bookmark.collection = form.cleaned_data['collection']
 
             bookmark.save() # Save the new collection info.
 
             return HttpResponseRedirect(reverse('core:bookmark_detail', args=[bookmark.id])) # Redirect after POST
     else:
         form = EditBookmark(initial={'name': bookmark.name, 'is_private': bookmark.is_private, 'url': bookmark.url,
-            'rating': bookmark.rating, 'notes': bookmark.notes}) # An unbound form
+               'read_later':bookmark.read_later, 'rating': bookmark.rating, 'notes': bookmark.notes}) # An unbound form
 
-    return render(request, 'core/bookmark_edit.html', {
-        'bookmark': bookmark, 'form': form,
-    })
+        return render(request, 'core/bookmark_edit.html', {
+              'bookmark': bookmark, 'form': form })
 
 def bookmark_viewhtml(request, bookmark_id):
     """ View the raw HTML for this bookmark"""

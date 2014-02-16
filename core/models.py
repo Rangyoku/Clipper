@@ -46,10 +46,12 @@ class Bookmark(models.Model):
     date_added = models.DateField(auto_now_add=True)
     cache_content = models.TextField(blank=True)
     is_private = models.BooleanField(default=False)
-    rating = models.IntegerField(blank=True)
+    read_later = models.BooleanField(default=False)
+    rating = models.IntegerField(blank=True, null=True)
     notes = models.CharField(max_length=500, blank=True)
-    collection = models.ForeignKey(Collection)
+    collection = models.ForeignKey(Collection, blank=True, null=True)
     raw_html = models.TextField(blank=True)
+    user = models.ForeignKey(UserProfile)
 
     def get_absolute_url(self):
         from django.core.urlresolvers import reverse

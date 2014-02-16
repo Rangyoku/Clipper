@@ -15,9 +15,11 @@
 
 {% block content %}
 
-    <h2>Hi {{ user }}! Let's Create Bookmark! </h2>
+    <h2>Hi {{ user }}! Let's Create Bookmark(let)! </h2>
     
-    <form action="{% url 'core:bookmark_create'%}" method="post">{% csrf_token %}
+    {% if errors %}<font color="00CC00">{{ errors }}</font>{% endif %}
+    
+    <form action="{% url 'core:bookmarklet_create'%}" method="post">{% csrf_token %}
         {{ form.as_p }}<br>
         <input type="submit" value="Create">
     </form>

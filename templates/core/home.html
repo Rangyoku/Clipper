@@ -37,13 +37,17 @@
 
    <div id="bookmark_list">
 	    <h3>Hey {{ user }}, welcome to your home view.</h3>
+	    {% if user_bookmarks %}
         <p>
 		  <ul>
-		  <!--{% for bookmark in user_bookmarks %}
+		  {% for bookmark in user_bookmarks %}
 		    <li><a href="{{ bookmark.get_absolute_url }}">{{ bookmark.name }}</a></li>
-		  {% endfor %}  -->
+		    <li>{{ bookmark.url }}</li>
+		    <li>{{ bookmark.notes }}</li>
+		  {% endfor %}
 		  </ul>
 		</p>
+		{% endif %}
    </div>
 </div><!--div for home_contents_area-->
     

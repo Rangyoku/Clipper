@@ -29,12 +29,12 @@
   
       {% else %}
 
-      You have no bookmarks in this collection. Why not <a href="{% url 'core:bookmark_create' collection.id %}">add one</a>?<br>
+      You have no bookmarks in this collection. Why not <a href="{% url 'core:bookmark_create' %}">add one</a>?<br>
 
       {% endif %}
 
       <p>
-      Want to <a href="{% url 'core:collection_edit' collection.id %}">edit this collection</a> or <a href="{% url 'core:bookmark_create' collection.id %}">add a new bookmark</a>?
+      Want to <a href="{% url 'core:collection_edit' collection.id %}">edit this collection</a> or <a href="{% url 'core:bookmark_create' %}">add a new bookmark</a>?
       </p>
     </div>
 {% endblock %}
